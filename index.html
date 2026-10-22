@@ -1,62 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>To-Do Sample</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 400px; margin: 40px auto; }
-    li { cursor: pointer; padding: 6px 0; display: flex; justify-content: space-between; }
-    li.done span { text-decoration: line-through; color: gray; }
-    li button { border: none; background: none; color: crimson; cursor: pointer; }
-  </style>
-</head>
-<body>
-  <h1>My To-Do List</h1>
-  <input id="task" placeholder="Add a task">
-  <button onclick="addTask()">Add</button>
-  <ul id="list"></ul>
-
-  <script>
-    const input = document.getElementById("task");
-    const list = document.getElementById("list");
-    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-    function save() {
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-    }
-
-    function render() {
-      list.innerHTML = "";
-      tasks.forEach((t, i) => {
-        const li = document.createElement("li");
-        if (t.done) li.classList.add("done");
-
-        const span = document.createElement("span");
-        span.textContent = t.text;
-        span.onclick = () => { t.done = !t.done; save(); render(); };
-
-        const del = document.createElement("button");
-        del.textContent = "✕";
-        del.onclick = () => { tasks.splice(i, 1); save(); render(); };
-
-        li.append(span, del);
-        list.appendChild(li);
-      });
-    }
-
-    function addTask() {
-      if (!input.value.trim()) return;
-      tasks.push({ text: input.value.trim(), done: false });
-      input.value = "";
-      save();
-      render();
-    }
-
-    input.addEventListener("keydown", e => {
-      if (e.key === "Enter") addTask();
-    });
-
-    render();
-  </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
