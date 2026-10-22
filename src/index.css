@@ -3,5 +3,6 @@
 body {
   min-height: 100vh;
   font-family: "Segoe UI", system-ui, sans-serif;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+  background: #0e0b09;
+  color: #e8ddd1;
 }
