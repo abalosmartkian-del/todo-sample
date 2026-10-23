@@ -1,3 +1,62 @@
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 64px 16px;
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #e8ddd1;
+}
+
+.count {
+  color: #8a7767;
+  font-size: 0.85rem;
+  margin: 6px 0 28px;
+  min-height: 1.2em;
+}
+
+.add-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.add-row input {
+  flex: 1;
+  padding: 12px 14px;
+  background: #17120f;
+  border: 1px solid #2d231c;
+  border-radius: 8px;
+  color: #e8ddd1;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.add-row input::placeholder { color: #6b5b4d; }
+.add-row input:focus { border-color: #a0714a; }
+
+.add-row button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #a0714a;
+  color: #0e0b09;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.add-row button:hover { background: #b98558; }
+
 .filters {
   display: flex;
   gap: 6px;
@@ -22,6 +81,32 @@
   font-weight: 600;
 }
 
+ul { list-style: none; }
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 4px;
+  border-bottom: 1px solid #231b15;
+  animation: fadeIn 0.25s ease;
+}
+
+li input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #a0714a;
+  cursor: pointer;
+}
+
+li span {
+  flex: 1;
+  color: #e8ddd1;
+  cursor: pointer;
+  word-break: break-word;
+}
+li.done span { text-decoration: line-through; color: #6b5b4d; }
+
 li .edit {
   flex: 1;
   padding: 6px 8px;
@@ -31,6 +116,22 @@ li .edit {
   color: #e8ddd1;
   font-size: 1rem;
   outline: none;
+}
+
+li .del {
+  border: none;
+  background: none;
+  color: #6b5b4d;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+li .del:hover { color: #c0623f; }
+
+.empty {
+  text-align: center;
+  color: #6b5b4d;
+  padding: 32px 0;
 }
 
 .clear {
@@ -46,3 +147,14 @@ li .edit {
   transition: all 0.2s;
 }
 .clear:hover { border-color: #c0623f; color: #c0623f; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 480px) {
+  #root { padding: 32px 16px; }
+  h1 { font-size: 1.3rem; }
+  .add-row button { padding: 12px 16px; }
+}
