@@ -1,99 +1,48 @@
-#root {
+.filters {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 64px 16px;
+  gap: 6px;
+  margin-bottom: 12px;
 }
 
-.card {
-  width: 100%;
-  max-width: 420px;
-}
-
-h1 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  color: #e8ddd1;
-}
-
-.count {
+.filters button {
+  padding: 6px 14px;
+  background: none;
+  border: 1px solid #2d231c;
+  border-radius: 20px;
   color: #8a7767;
   font-size: 0.85rem;
-  margin: 6px 0 28px;
-  min-height: 1.2em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.filters button:hover { border-color: #a0714a; color: #e8ddd1; }
+.filters button.active {
+  background: #a0714a;
+  border-color: #a0714a;
+  color: #0e0b09;
+  font-weight: 600;
 }
 
-.add-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 24px;
-}
-
-.add-row input {
+li .edit {
   flex: 1;
-  padding: 12px 14px;
+  padding: 6px 8px;
   background: #17120f;
-  border: 1px solid #2d231c;
-  border-radius: 8px;
+  border: 1px solid #a0714a;
+  border-radius: 6px;
   color: #e8ddd1;
   font-size: 1rem;
   outline: none;
-  transition: border-color 0.2s;
-}
-.add-row input::placeholder { color: #6b5b4d; }
-.add-row input:focus { border-color: #a0714a; }
-
-.add-row button {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  background: #a0714a;
-  color: #0e0b09;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.add-row button:hover { background: #b98558; }
-
-ul { list-style: none; }
-
-li {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 4px;
-  border-bottom: 1px solid #231b15;
 }
 
-li input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: #a0714a;
-  cursor: pointer;
-}
-
-li span {
-  flex: 1;
-  color: #e8ddd1;
-  cursor: pointer;
-  word-break: break-word;
-}
-li.done span { text-decoration: line-through; color: #6b5b4d; }
-
-li .del {
-  border: none;
+.clear {
+  display: block;
+  margin: 20px auto 0;
+  padding: 8px 16px;
   background: none;
-  color: #6b5b4d;
-  font-size: 1rem;
+  border: 1px solid #2d231c;
+  border-radius: 8px;
+  color: #8a7767;
+  font-size: 0.85rem;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: all 0.2s;
 }
-li .del:hover { color: #c0623f; }
-
-.empty {
-  text-align: center;
-  color: #6b5b4d;
-  padding: 32px 0;
-}
+.clear:hover { border-color: #c0623f; color: #c0623f; }
