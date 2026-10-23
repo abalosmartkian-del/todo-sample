@@ -158,3 +158,17 @@ li .del:hover { color: #c0623f; }
   h1 { font-size: 1.3rem; }
   .add-row button { padding: 12px 16px; }
 }
+
+.add-row { flex-wrap: wrap; }
+
+.add-row input[type="date"] {
+  flex: 0 0 auto;
+  color-scheme: dark;
+}
+
+.due {
+  color: #8a7767;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+.due.overdue { color: #c0623f; font-weight: 600; }

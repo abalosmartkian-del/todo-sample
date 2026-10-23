@@ -1,21 +1,34 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
-type Task = { id: number; text: string; done: boolean };
+type Task = { id: number; text: string; done: boolean; due: string };
 type Filter = "all" | "active" | "done";
+
+function todayString() {
+  return new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD
+}
+
+function formatDue(due: string) {
+  return new Date(due + "T00:00:00").toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+  });
+}
 
 export default function App() {
   const [tasks, setTasks] = useState<Task[]>(() => {
     const saved = localStorage.getItem("tasks");
     if (!saved) return [];
-    // older saved tasks have no id, so give them one
+    // older saved tasks may have no id or due date
     return JSON.parse(saved).map((t: Partial<Task>, i: number) => ({
       id: t.id ?? i,
       text: t.text ?? "",
       done: !!t.done,
+      due: t.due ?? "",
     }));
   });
   const [text, setText] = useState("");
+  const [due, setDue] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editText, setEditText] = useState("");
@@ -27,8 +40,9 @@ export default function App() {
   function addTask() {
     if (!text.trim()) return;
     const id = Math.max(0, ...tasks.map((t) => t.id)) + 1;
-    setTasks([...tasks, { id, text: text.trim(), done: false }]);
+    setTasks([...tasks, { id, text: text.trim(), done: false, due }]);
     setText("");
+    setDue("");
   }
 
   function toggle(id: number) {
@@ -60,6 +74,7 @@ export default function App() {
     setTasks(tasks.filter((t) => !t.done));
   }
 
+  const today = todayString();
   const left = tasks.filter((t) => !t.done).length;
   const doneCount = tasks.length - left;
 
@@ -89,6 +104,12 @@ export default function App() {
           placeholder="What do you need to do?"
           autoComplete="off"
         />
+        <input
+          type="date"
+          value={due}
+          onChange={(e) => setDue(e.target.value)}
+          title="Due date (optional)"
+        />
         <button onClick={addTask}>Add</button>
       </div>
 
@@ -106,33 +127,45 @@ export default function App() {
 
       <ul>
         {visible.length === 0 && <p className="empty">{emptyMessage}</p>}
-        {visible.map((t) => (
-          <li key={t.id} className={t.done ? "done" : ""}>
-            <input
-              type="checkbox"
-              checked={t.done}
-              onChange={() => toggle(t.id)}
-            />
-            {editingId === t.id ? (
+        {visible.map((t) => {
+          const overdue = !t.done && t.due !== "" && t.due < today;
+          return (
+            <li key={t.id} className={t.done ? "done" : ""}>
               <input
-                className="edit"
-                value={editText}
-                autoFocus
-                onChange={(e) => setEditText(e.target.value)}
-                onBlur={saveEdit}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") saveEdit();
-                  if (e.key === "Escape") setEditingId(null);
-                }}
+                type="checkbox"
+                checked={t.done}
+                onChange={() => toggle(t.id)}
               />
-            ) : (
-              <span onDoubleClick={() => startEdit(t)} title="Double-click to edit">
-                {t.text}
-              </span>
-            )}
-            <button className="del" onClick={() => remove(t.id)}>✕</button>
-          </li>
-        ))}
+              {editingId === t.id ? (
+                <input
+                  className="edit"
+                  value={editText}
+                  autoFocus
+                  onChange={(e) => setEditText(e.target.value)}
+                  onBlur={saveEdit}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") saveEdit();
+                    if (e.key === "Escape") setEditingId(null);
+                  }}
+                />
+              ) : (
+                <span
+                  onDoubleClick={() => startEdit(t)}
+                  title="Double-click to edit"
+                >
+                  {t.text}
+                </span>
+              )}
+              {t.due && (
+                <small className={overdue ? "due overdue" : "due"}>
+                  {overdue ? "Overdue · " : ""}
+                  {formatDue(t.due)}
+                </small>
+              )}
+              <button className="del" onClick={() => remove(t.id)}>✕</button>
+            </li>
+          );
+        })}
       </ul>
 
       {doneCount > 0 && (
