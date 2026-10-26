@@ -172,3 +172,33 @@ li .del:hover { color: #c0623f; }
   white-space: nowrap;
 }
 .due.overdue { color: #c0623f; font-weight: 600; }
+
+.add-row select,
+.cat-filter {
+  padding: 12px 10px;
+  background: #17120f;
+  border: 1px solid #2d231c;
+  border-radius: 8px;
+  color: #e8ddd1;
+  font-size: 0.9rem;
+  outline: none;
+  cursor: pointer;
+}
+.add-row select:focus,
+.cat-filter:focus { border-color: #a0714a; }
+
+.cat-filter {
+  padding: 6px 10px;
+  margin-bottom: 8px;
+  color: #8a7767;
+  font-size: 0.85rem;
+}
+
+.tag {
+  padding: 2px 8px;
+  border: 1px solid #a0714a;
+  border-radius: 10px;
+  color: #a0714a;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
