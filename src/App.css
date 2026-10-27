@@ -217,3 +217,46 @@ li .del:hover { color: #c0623f; }
   border-radius: 2px;
   transition: width 0.3s ease;
 }
+
+.card { position: relative; }
+
+.theme-toggle {
+  position: absolute;
+  top: 4px;
+  right: 0;
+  padding: 4px 12px;
+  background: none;
+  border: 1px solid #2d231c;
+  border-radius: 14px;
+  color: #8a7767;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.theme-toggle:hover { border-color: #a0714a; color: #a0714a; }
+
+/* Light theme */
+[data-theme="light"] body { background: #f5efe8; color: #2a1f17; }
+[data-theme="light"] h1,
+[data-theme="light"] li span,
+[data-theme="light"] .add-row input,
+[data-theme="light"] .add-row select,
+[data-theme="light"] .cat-filter,
+[data-theme="light"] li .edit { color: #2a1f17; }
+[data-theme="light"] .add-row input,
+[data-theme="light"] .add-row select,
+[data-theme="light"] .cat-filter,
+[data-theme="light"] li .edit { background: #fffaf4; }
+[data-theme="light"] .add-row input,
+[data-theme="light"] .add-row select,
+[data-theme="light"] .cat-filter,
+[data-theme="light"] .filters button,
+[data-theme="light"] .clear,
+[data-theme="light"] .theme-toggle { border-color: #dccdbd; }
+[data-theme="light"] li { border-bottom-color: #e6d9cb; }
+[data-theme="light"] .progress { background: #e6d9cb; }
+[data-theme="light"] .add-row button,
+[data-theme="light"] .filters button.active { color: #fffaf4; }
+[data-theme="light"] li.done span,
+[data-theme="light"] li .del,
+[data-theme="light"] .empty { color: #a89a8c; }

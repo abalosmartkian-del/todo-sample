@@ -44,10 +44,19 @@ export default function App() {
   const [sortByDue, setSortByDue] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editText, setEditText] = useState("");
+  const [theme, setTheme] = useState(
+  () => localStorage.getItem("theme") ?? "dark"
+);
+  
 
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
+
+  useEffect(() => {
+  document.documentElement.dataset.theme = theme;
+  localStorage.setItem("theme", theme);
+}, [theme]);
 
   function addTask() {
     if (!text.trim()) return;
@@ -115,6 +124,12 @@ export default function App() {
 
   return (
     <div className="card">
+      <button
+  className="theme-toggle"
+  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+>
+  {theme === "dark" ? "Light" : "Dark"}
+</button>
       <h1>My To-Do List</h1>
       {tasks.length > 0 && (
   <div className="progress">
