@@ -116,6 +116,14 @@ export default function App() {
   return (
     <div className="card">
       <h1>My To-Do List</h1>
+      {tasks.length > 0 && (
+  <div className="progress">
+    <div
+      className="bar"
+      style={{ width: `${(doneCount / tasks.length) * 100}%` }}
+    />
+  </div>
+)}
       <p className="count">
         {tasks.length ? `${left} of ${tasks.length} tasks left` : ""}
       </p>

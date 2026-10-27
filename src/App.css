@@ -202,3 +202,18 @@ li .del:hover { color: #c0623f; }
   font-size: 0.75rem;
   white-space: nowrap;
 }
+
+.progress {
+  height: 4px;
+  margin-top: 12px;
+  background: #231b15;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.bar {
+  height: 100%;
+  background: #a0714a;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
