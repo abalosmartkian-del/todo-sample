@@ -45,8 +45,8 @@ export default function App() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editText, setEditText] = useState("");
   const [theme, setTheme] = useState(
-  () => localStorage.getItem("theme") ?? "dark"
-);
+  () => localStorage.getItem("theme") ?? "dark");
+  const [dragId, setDragId] = useState<number | null>(null);
   
 
   useEffect(() => {
@@ -95,6 +95,16 @@ export default function App() {
   function clearCompleted() {
     setTasks(tasks.filter((t) => !t.done));
   }
+
+  function moveTask(targetId: number) {
+  if (dragId === null || dragId === targetId) return;
+  const from = tasks.findIndex((t) => t.id === dragId);
+  const to = tasks.findIndex((t) => t.id === targetId);
+  const copy = [...tasks];
+  const [item] = copy.splice(from, 1);
+  copy.splice(to, 0, item);
+  setTasks(copy);
+}
 
   const today = todayString();
   const left = tasks.filter((t) => !t.done).length;
@@ -208,7 +218,18 @@ export default function App() {
         {visible.map((t) => {
           const overdue = !t.done && t.due !== "" && t.due < today;
           return (
-            <li key={t.id} className={t.done ? "done" : ""}>
+            <li
+              key={t.id}
+              className={(t.done ? "done" : "") + (dragId === t.id ? " dragging" : "")}
+              draggable={!sortByDue && editingId !== t.id}
+              onDragStart={() => setDragId(t.id)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() => {
+                moveTask(t.id);
+                setDragId(null);
+              }}
+              onDragEnd={() => setDragId(null)}
+            >
               <input
                 type="checkbox"
                 checked={t.done}

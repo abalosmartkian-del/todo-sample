@@ -260,3 +260,6 @@ li .del:hover { color: #c0623f; }
 [data-theme="light"] li.done span,
 [data-theme="light"] li .del,
 [data-theme="light"] .empty { color: #a89a8c; }
+
+li[draggable="true"] { cursor: grab; }
+li.dragging { opacity: 0.4; }
