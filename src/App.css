@@ -308,3 +308,24 @@ li .move:disabled { opacity: 0.25; cursor: default; }
   background: #fffaf4;
   color: #2a1f17;
 }
+
+.search {
+  width: 100%;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  background: #17120f;
+  border: 1px solid #2d231c;
+  border-radius: 8px;
+  color: #e8ddd1;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search::placeholder { color: #6b5b4d; }
+.search:focus { border-color: #a0714a; }
+
+[data-theme="light"] .search {
+  background: #fffaf4;
+  border-color: #dccdbd;
+  color: #2a1f17;
+}

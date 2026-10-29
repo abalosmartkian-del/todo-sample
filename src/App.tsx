@@ -48,6 +48,7 @@ export default function App() {
   () => localStorage.getItem("theme") ?? "dark");
   const [dragId, setDragId] = useState<number | null>(null);
   const [undo, setUndo] = useState<{ task: Task; index: number } | null>(null);
+  const [query, setQuery] = useState("");
   
 
   useEffect(() => {
@@ -144,6 +145,7 @@ function moveBy(id: number, dir: -1 | 1) {
       filter === "all" ? true : filter === "active" ? !t.done : t.done
     )
     .filter((t) => (catFilter ? t.cat === catFilter : true))
+    .filter((t) => t.text.toLowerCase().includes(query.trim().toLowerCase()))
     .sort((a, b) => {
       if (!sortByDue) return 0;
       if (!a.due && !b.due) return 0;
@@ -152,8 +154,10 @@ function moveBy(id: number, dir: -1 | 1) {
       return a.due.localeCompare(b.due);
     });
 
-  const emptyMessage =
-    tasks.length === 0
+    const emptyMessage =
+    query.trim()
+    ? "No tasks match your search."
+    : tasks.length === 0
       ? "No tasks yet. Add one above."
       : filter === "active"
       ? "Nothing left to do."
@@ -210,7 +214,14 @@ function moveBy(id: number, dir: -1 | 1) {
         </select>
         <button onClick={addTask}>Add</button>
       </div>
-
+      {tasks.length > 0 && (
+        <input
+          className="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search tasks..."
+          autoComplete="off"/>
+      )}
       <div className="filters">
         {(["all", "active", "done"] as Filter[]).map((f) => (
           <button
