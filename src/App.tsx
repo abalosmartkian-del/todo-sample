@@ -106,6 +106,17 @@ export default function App() {
   setTasks(copy);
 }
 
+function moveBy(id: number, dir: -1 | 1) {
+  const i = visible.findIndex((t) => t.id === id);
+  const other = visible[i + dir];
+  if (!other) return;
+  const a = tasks.findIndex((t) => t.id === id);
+  const b = tasks.findIndex((t) => t.id === other.id);
+  const copy = [...tasks];
+  [copy[a], copy[b]] = [copy[b], copy[a]];
+  setTasks(copy);
+}
+
   const today = todayString();
   const left = tasks.filter((t) => !t.done).length;
   const doneCount = tasks.length - left;
@@ -262,6 +273,20 @@ export default function App() {
                   {formatDue(t.due)}
                 </small>
               )}
+              <button
+                    className="move"
+                    onClick={() => moveBy(t.id, -1)}
+                    disabled={sortByDue}
+                    title="Move up"
+                  >
+                    ▲
+                  </button>
+                  <button
+                    className="move"
+                    onClick={() => moveBy(t.id, 1)}
+                    disabled={sortByDue}
+                    title="Move down">
+                </button>
               <button className="del" onClick={() => remove(t.id)}>✕</button>
             </li>
           );

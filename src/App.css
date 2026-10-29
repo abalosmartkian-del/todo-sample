@@ -263,3 +263,15 @@ li .del:hover { color: #c0623f; }
 
 li[draggable="true"] { cursor: grab; }
 li.dragging { opacity: 0.4; }
+
+li .move {
+  border: none;
+  background: none;
+  color: #6b5b4d;
+  font-size: 0.7rem;
+  padding: 4px 2px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+li .move:hover:not(:disabled) { color: #a0714a; }
+li .move:disabled { opacity: 0.25; cursor: default; }
