@@ -275,3 +275,36 @@ li .move {
 }
 li .move:hover:not(:disabled) { color: #a0714a; }
 li .move:disabled { opacity: 0.25; cursor: default; }
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  background: #17120f;
+  border: 1px solid #a0714a;
+  border-radius: 10px;
+  color: #e8ddd1;
+  font-size: 0.9rem;
+  animation: fadeIn 0.25s ease;
+  z-index: 10;
+}
+
+.toast button {
+  background: none;
+  border: none;
+  color: #a0714a;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.toast button:hover { color: #b98558; }
+
+[data-theme="light"] .toast {
+  background: #fffaf4;
+  color: #2a1f17;
+}

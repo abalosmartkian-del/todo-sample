@@ -47,6 +47,7 @@ export default function App() {
   const [theme, setTheme] = useState(
   () => localStorage.getItem("theme") ?? "dark");
   const [dragId, setDragId] = useState<number | null>(null);
+  const [undo, setUndo] = useState<{ task: Task; index: number } | null>(null);
   
 
   useEffect(() => {
@@ -57,6 +58,12 @@ export default function App() {
   document.documentElement.dataset.theme = theme;
   localStorage.setItem("theme", theme);
 }, [theme]);
+
+useEffect(() => {
+  if (!undo) return;
+  const timer = setTimeout(() => setUndo(null), 5000);
+  return () => clearTimeout(timer);
+}, [undo]);
 
   function addTask() {
     if (!text.trim()) return;
@@ -71,9 +78,20 @@ export default function App() {
     setTasks(tasks.map((t) => (t.id === id ? { ...t, done: !t.done } : t)));
   }
 
-  function remove(id: number) {
-    setTasks(tasks.filter((t) => t.id !== id));
-  }
+function remove(id: number) {
+  const index = tasks.findIndex((t) => t.id === id);
+  if (index === -1) return;
+  setUndo({ task: tasks[index], index });
+  setTasks(tasks.filter((t) => t.id !== id));
+}
+
+function undoDelete() {
+  if (!undo) return;
+  const copy = [...tasks];
+  copy.splice(Math.min(undo.index, copy.length), 0, undo.task);
+  setTasks(copy);
+  setUndo(null);
+}
 
   function startEdit(t: Task) {
     setEditingId(t.id);
@@ -298,6 +316,12 @@ function moveBy(id: number, dir: -1 | 1) {
           Clear completed ({doneCount})
         </button>
       )}
+      {undo && (
+        <div className="toast">
+          <span>Task deleted</span>
+          <button onClick={undoDelete}>Undo</button>
+        </div>
+)}
     </div>
   );
 }
