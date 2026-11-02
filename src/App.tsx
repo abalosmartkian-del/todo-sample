@@ -7,7 +7,9 @@ type Task = {
   done: boolean;
   due: string;
   cat: string;
+  note: string;
 };
+
 type Filter = "all" | "active" | "done";
 
 const CATEGORIES = ["Work", "Personal", "Study"];
@@ -34,6 +36,7 @@ export default function App() {
       done: !!t.done,
       due: t.due ?? "",
       cat: t.cat ?? "",
+      note: t.note ?? "",
     }));
   });
   const [text, setText] = useState("");
@@ -49,6 +52,7 @@ export default function App() {
   const [dragId, setDragId] = useState<number | null>(null);
   const [undo, setUndo] = useState<{ task: Task; index: number } | null>(null);
   const [query, setQuery] = useState("");
+  const [noteId, setNoteId] = useState<number | null>(null);
   
 
   useEffect(() => {
@@ -69,7 +73,7 @@ useEffect(() => {
   function addTask() {
     if (!text.trim()) return;
     const id = Math.max(0, ...tasks.map((t) => t.id)) + 1;
-    setTasks([...tasks, { id, text: text.trim(), done: false, due, cat }]);
+    setTasks([...tasks, { id, text: text.trim(), done: false, due, cat, note: "" }]);
     setText("");
     setDue("");
     setCat("");
@@ -92,6 +96,10 @@ function undoDelete() {
   copy.splice(Math.min(undo.index, copy.length), 0, undo.task);
   setTasks(copy);
   setUndo(null);
+}
+
+function setNote(id: number, note: string) {
+  setTasks(tasks.map((t) => (t.id === id ? { ...t, note } : t)));
 }
 
 function exportTasks() {
@@ -121,6 +129,7 @@ function importTasks(e: ChangeEvent<HTMLInputElement>) {
         done: !!t.done,
         due: t.due ?? "",
         cat: t.cat ?? "",
+        note: String(t.note ?? ""),
       }));
       if (window.confirm(`Replace your current tasks with ${imported.length} imported tasks?`)) {
         setTasks(imported);
@@ -299,7 +308,7 @@ function moveBy(id: number, dir: -1 | 1) {
             <li
               key={t.id}
               className={(t.done ? "done" : "") + (dragId === t.id ? " dragging" : "")}
-              draggable={!sortByDue && editingId !== t.id}
+              draggable={!sortByDue && editingId !== t.id && noteId !== t.id}
               onDragStart={() => setDragId(t.id)}
               onDragOver={(e) => e.preventDefault()}
               onDrop={() => {
@@ -350,11 +359,31 @@ function moveBy(id: number, dir: -1 | 1) {
                   </button>
                   <button
                     className="move"
+                    onClick={() => setNoteId(noteId === t.id ? null : t.id)}
+                    title="Add or edit note">
+                      ✎
+                    </button>
+                  <button
+                    className="move"
                     onClick={() => moveBy(t.id, 1)}
                     disabled={sortByDue}
                     title="Move down">
                 </button>
               <button className="del" onClick={() => remove(t.id)}>✕</button>
+              {noteId === t.id ? (
+              <textarea
+                className="note-edit"
+                value={t.note}
+                autoFocus
+                placeholder="Add a note..."
+                onChange={(e) => setNote(t.id, e.target.value)}
+                onBlur={() => setNoteId(null)}
+              />
+            ) : t.note ? (
+              <p className="note" onClick={() => setNoteId(t.id)}>
+                {t.note}
+              </p>
+            ) : null}
             </li>
           );
         })}

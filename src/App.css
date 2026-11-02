@@ -354,3 +354,37 @@ li .move:disabled { opacity: 0.25; cursor: default; }
 
 [data-theme="light"] .backup button,
 [data-theme="light"] .backup label { border-color: #dccdbd; }
+
+li { flex-wrap: wrap; }
+
+.note,
+.note-edit {
+  flex-basis: 100%;
+  margin-left: 30px;
+}
+
+.note {
+  color: #8a7767;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  cursor: pointer;
+}
+
+.note-edit {
+  min-height: 60px;
+  padding: 8px 10px;
+  background: #17120f;
+  border: 1px solid #a0714a;
+  border-radius: 6px;
+  color: #e8ddd1;
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+  outline: none;
+}
+
+[data-theme="light"] .note-edit {
+  background: #fffaf4;
+  color: #2a1f17;
+}
