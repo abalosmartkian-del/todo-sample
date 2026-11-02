@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import "./App.css";
 
 type Task = {
@@ -92,6 +92,44 @@ function undoDelete() {
   copy.splice(Math.min(undo.index, copy.length), 0, undo.task);
   setTasks(copy);
   setUndo(null);
+}
+
+function exportTasks() {
+  const blob = new Blob([JSON.stringify(tasks, null, 2)], {
+    type: "application/json",
+  });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "todo-backup.json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importTasks(e: ChangeEvent<HTMLInputElement>) {
+  const file = e.target.files?.[0];
+  e.target.value = "";
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(String(reader.result));
+      if (!Array.isArray(data)) throw new Error("Not a list");
+      const imported: Task[] = data.map((t: Partial<Task>, i: number) => ({
+        id: i + 1,
+        text: String(t.text ?? ""),
+        done: !!t.done,
+        due: t.due ?? "",
+        cat: t.cat ?? "",
+      }));
+      if (window.confirm(`Replace your current tasks with ${imported.length} imported tasks?`)) {
+        setTasks(imported);
+      }
+    } catch {
+      window.alert("That file isn't a valid backup.");
+    }
+  };
+  reader.readAsText(file);
 }
 
   function startEdit(t: Task) {
@@ -327,6 +365,15 @@ function moveBy(id: number, dir: -1 | 1) {
           Clear completed ({doneCount})
         </button>
       )}
+      <div className="backup">
+        <button onClick={exportTasks} disabled={tasks.length === 0}>
+          Export
+        </button>
+        <label>
+          Import
+          <input type="file" accept=".json" onChange={importTasks} hidden />
+        </label>
+      </div>
       {undo && (
         <div className="toast">
           <span>Task deleted</span>

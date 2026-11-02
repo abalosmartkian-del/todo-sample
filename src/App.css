@@ -329,3 +329,28 @@ li .move:disabled { opacity: 0.25; cursor: default; }
   border-color: #dccdbd;
   color: #2a1f17;
 }
+
+.backup {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.backup button,
+.backup label {
+  padding: 6px 14px;
+  background: none;
+  border: 1px solid #2d231c;
+  border-radius: 8px;
+  color: #8a7767;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.backup button:hover:not(:disabled),
+.backup label:hover { border-color: #a0714a; color: #a0714a; }
+.backup button:disabled { opacity: 0.3; cursor: default; }
+
+[data-theme="light"] .backup button,
+[data-theme="light"] .backup label { border-color: #dccdbd; }
