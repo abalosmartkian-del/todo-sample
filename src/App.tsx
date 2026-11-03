@@ -8,6 +8,7 @@ type Task = {
   due: string;
   cat: string;
   note: string;
+  priority: string;
 };
 
 type Filter = "all" | "active" | "done";
@@ -37,6 +38,7 @@ export default function App() {
       due: t.due ?? "",
       cat: t.cat ?? "",
       note: t.note ?? "",
+      priority: t.priority ?? "",
     }));
   });
   const [text, setText] = useState("");
@@ -53,6 +55,7 @@ export default function App() {
   const [undo, setUndo] = useState<{ task: Task; index: number } | null>(null);
   const [query, setQuery] = useState("");
   const [noteId, setNoteId] = useState<number | null>(null);
+  const [priority, setPriority] = useState("");
   
 
   useEffect(() => {
@@ -73,10 +76,11 @@ useEffect(() => {
   function addTask() {
     if (!text.trim()) return;
     const id = Math.max(0, ...tasks.map((t) => t.id)) + 1;
-    setTasks([...tasks, { id, text: text.trim(), done: false, due, cat, note: "" }]);
+    setTasks([...tasks,{ id, text: text.trim(), done: false, due, cat, note: "", priority },]);
     setText("");
     setDue("");
     setCat("");
+    setPriority("");
   }
 
   function toggle(id: number) {
@@ -130,6 +134,7 @@ function importTasks(e: ChangeEvent<HTMLInputElement>) {
         due: t.due ?? "",
         cat: t.cat ?? "",
         note: String(t.note ?? ""),
+        priority: t.priority ?? "",
       }));
       if (window.confirm(`Replace your current tasks with ${imported.length} imported tasks?`)) {
         setTasks(imported);
@@ -258,6 +263,16 @@ function moveBy(id: number, dir: -1 | 1) {
               {c}
             </option>
           ))}
+        <select
+          value={priority}
+          onChange={(e) => setPriority(e.target.value)}
+          title="Priority (optional)">
+          <option value="">No priority</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+        
         </select>
         <button onClick={addTask}>Add</button>
       </div>
@@ -307,7 +322,7 @@ function moveBy(id: number, dir: -1 | 1) {
           return (
             <li
               key={t.id}
-              className={(t.done ? "done" : "") + (dragId === t.id ? " dragging" : "")}
+              className={(t.done ? "done" : "") +(dragId === t.id ? " dragging" : "") + (t.priority ? " p-" + t.priority : "")}
               draggable={!sortByDue && editingId !== t.id && noteId !== t.id}
               onDragStart={() => setDragId(t.id)}
               onDragOver={(e) => e.preventDefault()}
